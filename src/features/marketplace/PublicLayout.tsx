@@ -1,15 +1,18 @@
 import { Outlet, Link, useNavigate } from "react-router";
 import { ShoppingBag, Facebook, Instagram, ArrowLeft } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export function PublicLayout() {
   const navigate = useNavigate();
+  const token = useAuthStore((s) => s.token);
+  const sellerHref = token ? "/marketplace/offers/my" : "/register";
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans text-gray-900">
       {/* Top announcement bar */}
       <div className="bg-[#FF6A00] text-white text-xs font-bold text-center py-2 px-4 tracking-wide shrink-0">
         ¡APROVECHA DESCUENTOS EN MATERIALES AL MAYOR! |{" "}
-        <Link to="/register" className="underline hover:text-white/80">
+        <Link to={sellerHref} className="underline hover:text-white/80">
           QUIERO VENDER MIS PRODUCTOS
         </Link>
       </div>
@@ -37,7 +40,7 @@ export function PublicLayout() {
           <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-700">
             <Link to="/shop" className="hover:text-[#FF6A00] transition-colors">Comprar</Link>
             <Link to="/directory" className="hover:text-[#FF6A00] transition-colors">Directorio de Empresas</Link>
-            <Link to="/register" className="hover:text-[#FF6A00] transition-colors">Quiero Vender</Link>
+            <Link to={sellerHref} className="hover:text-[#FF6A00] transition-colors">Quiero Vender</Link>
           </nav>
 
           {/* Right actions */}
