@@ -1,0 +1,30 @@
+# Netlify configuration for LuloWinNG Frontend
+
+[build]
+  base    = "."
+  command = "npm run build"
+  publish = "dist"
+
+# SPA redirect: todas las rutas → index.html
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Proxy /api → tu backend en Railway/Render
+# Reemplaza la URL por la URL real de tu backend desplegado
+[[redirects]]
+  from   = "/api/*"
+  to     = "https://TU_BACKEND_URL.railway.app/api/:splat"
+  status = 200
+  force  = true
+
+# Proxy /uploads → tu backend
+[[redirects]]
+  from   = "/uploads/*"
+  to     = "https://TU_BACKEND_URL.railway.app/uploads/:splat"
+  status = 200
+  force  = true
+
+[build.environment]
+  NODE_VERSION = "20"
