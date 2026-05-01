@@ -22,8 +22,16 @@ export function Header() {
         )}
       </div>
 
-      {/* User menu */}
-      <div className="flex items-center gap-3">
+      {/* User menu and Actions */}
+      <div className="flex items-center gap-4">
+        <a 
+          href="/store"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#FF6A00]/10 text-[#FF6A00] hover:bg-[#FF6A00]/20 border border-[#FF6A00]/20 rounded-md text-xs font-semibold transition-colors"
+        >
+          Ir al Store
+        </a>
         {user && (
           <div className="flex items-center gap-2 text-sm">
             <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary font-medium text-xs">

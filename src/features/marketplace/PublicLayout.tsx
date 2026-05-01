@@ -4,7 +4,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 export function PublicLayout() {
   const navigate = useNavigate();
-  const token = useAuthStore((s) => s.token);
+  const { token, user } = useAuthStore();
   const sellerHref = token ? "/marketplace/offers/my" : "/register";
 
   return (
@@ -54,12 +54,24 @@ export function PublicLayout() {
               <ShoppingBag size={22} />
               <span className="absolute -top-1 -right-1 bg-[#FF6A00] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
             </button>
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex px-4 py-2 bg-gray-900 text-white text-sm font-bold rounded-full hover:bg-gray-800 transition-colors"
-            >
-              Entrar
-            </Link>
+            {user ? (
+              <Link
+                to="/dashboard"
+                className="hidden sm:inline-flex px-4 py-2 bg-gray-100 text-gray-900 text-sm font-bold rounded-full hover:bg-gray-200 transition-colors items-center gap-2"
+              >
+                <div className="w-5 h-5 rounded-full bg-[#FF6A00] flex items-center justify-center text-white text-xs">
+                  {user.nombre?.charAt(0).toUpperCase()}
+                </div>
+                {user.nombre}
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="hidden sm:inline-flex px-4 py-2 bg-gray-900 text-white text-sm font-bold rounded-full hover:bg-gray-800 transition-colors"
+              >
+                Entrar
+              </Link>
+            )}
           </div>
         </div>
       </header>
