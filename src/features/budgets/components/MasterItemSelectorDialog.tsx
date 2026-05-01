@@ -23,7 +23,7 @@ export function MasterItemSelectorDialog({ open, onOpenChange, chapterId, projec
 
   const { data, isLoading } = useQuery({
     queryKey: ["items", search],
-    queryFn: () => api.get("/items", { params: { search, limit: 10 } }).then((r) => r.data),
+    queryFn: () => api.get("/items", { params: { search, limit: 500 } }).then((r) => r.data),
     enabled: open,
   });
 
