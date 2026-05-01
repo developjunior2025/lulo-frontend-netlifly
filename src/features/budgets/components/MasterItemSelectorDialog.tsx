@@ -27,11 +27,17 @@ export function MasterItemSelectorDialog({ open, onOpenChange, chapterId, projec
     enabled: open,
   });
 
+  const [error, setError] = useState("");
+
   const addMutation = useMutation({
     mutationFn: (payload: any) => api.post(`/chapters/${chapterId}/items`, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["budget", projectId] });
       handleClose();
+    },
+    onError: (err: any) => {
+      console.error(err);
+      setError(err.response?.data?.error || err.response?.data?.message || "Error al añadir la partida");
     }
   });
 
@@ -40,6 +46,7 @@ export function MasterItemSelectorDialog({ open, onOpenChange, chapterId, projec
     setCantidad("");
     setNumeroPar("");
     setSearch("");
+    setError("");
     onOpenChange(false);
   };
 
@@ -119,13 +126,17 @@ export function MasterItemSelectorDialog({ open, onOpenChange, chapterId, projec
             </div>
           </div>
 
+          {error && <div className="p-3 bg-destructive/10 text-destructive text-sm rounded-lg">{error}</div>}
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Número de Partida (Ej. 1.1)
+                Número de Ítem (Ej. 1, 2)
               </label>
               <input 
-                type="text" 
+                type="number" 
+                min="1"
+                step="1"
                 value={numeroPar}
                 onChange={(e) => setNumeroPar(e.target.value)}
                 required
