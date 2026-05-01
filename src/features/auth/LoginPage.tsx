@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, useLocation, Link } from "react-router";
 import { useAuthStore } from "@/store/useAuthStore";
 import { api } from "@/services/api";
-import { HardHat, Loader2, AlertCircle } from "lucide-react";
+import { HardHat, Loader2, AlertCircle, Info } from "lucide-react";
 
 export function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +11,8 @@ export function LoginPage() {
   const [loading, setLoading] = useState(false);
   const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
+  const location = useLocation();
+  const infoMessage = (location.state as { info?: string } | null)?.info ?? "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +57,13 @@ export function LoginPage() {
         {/* Card */}
         <div className="bg-card border border-border rounded-xl p-6 shadow-2xl">
           <h2 className="text-lg font-semibold text-foreground mb-5">Iniciar Sesión</h2>
+
+          {infoMessage && (
+            <div className="flex items-center gap-2 text-blue-600 text-sm bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <Info size={15} />
+              {infoMessage}
+            </div>
+          )}
 
           {error && (
             <div className="flex items-center gap-2 text-destructive text-sm bg-destructive/10 border border-destructive/20 rounded-lg p-3 mb-4">

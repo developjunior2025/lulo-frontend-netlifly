@@ -33,7 +33,7 @@ export function RegisterPage() {
       if (err.message === "Network Error" || err.code === "ERR_NETWORK") {
         setError("Error de red: No se pudo conectar con el servidor.");
       } else {
-        setError(err.response?.data?.message || "Ocurrió un error al registrar la cuenta.");
+        setError(err.response?.data?.error || err.response?.data?.message || "Ocurrió un error al registrar la cuenta.");
       }
     } finally {
       setLoading(false);

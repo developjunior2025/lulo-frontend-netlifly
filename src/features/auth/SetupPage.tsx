@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "@/store/useAuthStore";
 import { api } from "@/services/api";
@@ -9,9 +9,24 @@ export function SetupPage() {
   const [company, setCompany] = useState({ nombre: "", rif: "", direccion: "", telefono: "", email: "" });
   const [admin, setAdmin] = useState({ nombre: "", email: "", password: "", confirm: "" });
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
   const [error, setError] = useState("");
   const setAuth = useAuthStore((s) => s.setAuth);
   const navigate = useNavigate();
+
+  // Verify setup status on mount — if already configured, redirect to login
+  useEffect(() => {
+    api.get("/auth/setup-status")
+      .then(({ data }) => {
+        if (!data.setupRequired) {
+          navigate("/login", { replace: true, state: { info: "El sistema ya está configurado. Inicia sesión con tu cuenta." } });
+        }
+      })
+      .catch(() => {
+        // If we can't reach the API, let the user try anyway
+      })
+      .finally(() => setChecking(false));
+  }, [navigate]);
 
   const handleSetup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +46,14 @@ export function SetupPage() {
       setLoading(false);
     }
   };
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 size={32} className="animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
