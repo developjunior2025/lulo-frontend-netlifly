@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router";
 import { ShoppingBag, Facebook, Instagram, ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -5,16 +6,25 @@ import { useAuthStore } from "@/store/useAuthStore";
 export function PublicLayout() {
   const navigate = useNavigate();
   const { token, user } = useAuthStore();
-  const sellerHref = token ? "/marketplace/offers/my" : "/register";
+  const [showModal, setShowModal] = useState(false);
+
+  const handleSellClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (token) {
+      setShowModal(true);
+    } else {
+      navigate("/setup");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans text-gray-900">
       {/* Top announcement bar */}
       <div className="bg-[#FF6A00] text-white text-xs font-bold text-center py-2 px-4 tracking-wide shrink-0">
         ¡APROVECHA DESCUENTOS EN MATERIALES AL MAYOR! |{" "}
-        <Link to={sellerHref} className="underline hover:text-white/80">
+        <button onClick={handleSellClick} className="underline hover:text-white/80 font-bold">
           QUIERO VENDER MIS PRODUCTOS
-        </Link>
+        </button>
       </div>
 
       {/* Main navbar */}
@@ -40,7 +50,7 @@ export function PublicLayout() {
           <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-700">
             <Link to="/shop" className="hover:text-[#FF6A00] transition-colors">Comprar</Link>
             <Link to="/directory" className="hover:text-[#FF6A00] transition-colors">Directorio de Empresas</Link>
-            <Link to={sellerHref} className="hover:text-[#FF6A00] transition-colors">Quiero Vender</Link>
+            <button onClick={handleSellClick} className="hover:text-[#FF6A00] transition-colors font-semibold">Quiero Vender</button>
           </nav>
 
           {/* Right actions */}
@@ -131,6 +141,32 @@ export function PublicLayout() {
           </div>
         </div>
       </footer>
+
+      {/* Already Registered Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="text-xl font-black text-gray-900 mb-2">¡Ya estás registrado!</h3>
+            <p className="text-gray-600 text-sm mb-6">
+              Tu cuenta ya está activa en la plataforma. Puedes ir a tu Dashboard para gestionar tus productos y ventas.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-bold hover:bg-gray-50 transition-colors"
+              >
+                Cerrar
+              </button>
+              <Link
+                to="/dashboard"
+                className="flex-1 py-2.5 rounded-xl bg-[#FF6A00] text-white text-sm font-bold hover:bg-[#E65C00] transition-colors text-center flex items-center justify-center"
+              >
+                Ir a mi Dashboard
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

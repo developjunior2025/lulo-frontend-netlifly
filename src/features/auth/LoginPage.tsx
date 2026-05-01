@@ -100,7 +100,7 @@ export function LoginPage() {
           </form>
           <div className="mt-6 text-center text-sm text-muted-foreground border-t border-border pt-4">
             ¿No tienes cuenta?{" "}
-            <Link to="/register" className="text-primary hover:underline font-medium">
+            <Link to="/setup" className="text-primary hover:underline font-medium">
               Regístrate aquí
             </Link>
           </div>
