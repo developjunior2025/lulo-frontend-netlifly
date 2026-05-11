@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router";
 import { ShoppingBag, Facebook, Instagram, ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -7,6 +7,12 @@ export function PublicLayout() {
   const navigate = useNavigate();
   const { token, user } = useAuthStore();
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const handleShowModal = () => setShowModal(true);
+    window.addEventListener("show-register-modal", handleShowModal);
+    return () => window.removeEventListener("show-register-modal", handleShowModal);
+  }, []);
 
   const handleSellClick = (e: React.MouseEvent) => {
     e.preventDefault();

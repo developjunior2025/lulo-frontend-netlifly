@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useAuthStore } from "@/store/useAuthStore";
 import {
   ArrowRight,
   Building2,
@@ -74,6 +75,19 @@ const BANNERS = [
 
 export function StorefrontPage() {
   const [currentBanner, setCurrentBanner] = useState(0);
+  const { token } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleActionClick = (e: React.MouseEvent<HTMLAnchorElement>, link: string) => {
+    if (link === "/register") {
+      e.preventDefault();
+      if (token) {
+        window.dispatchEvent(new CustomEvent("show-register-modal"));
+      } else {
+        navigate("/setup");
+      }
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -124,11 +138,19 @@ export function StorefrontPage() {
                   {banner.description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link to={banner.primaryAction.link} className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2">
+                  <Link 
+                    to={banner.primaryAction.link} 
+                    onClick={(e) => handleActionClick(e, banner.primaryAction.link)}
+                    className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2"
+                  >
                     {banner.primaryAction.icon && <Search size={20} />} {banner.primaryAction.text}
                   </Link>
                   {banner.secondaryAction && (
-                    <Link to={banner.secondaryAction.link} className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <Link 
+                      to={banner.secondaryAction.link} 
+                      onClick={(e) => handleActionClick(e, banner.secondaryAction.link)}
+                      className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-colors flex items-center justify-center"
+                    >
                       {banner.secondaryAction.text}
                     </Link>
                   )}
