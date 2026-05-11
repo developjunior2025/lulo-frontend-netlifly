@@ -195,7 +195,7 @@ export function StorefrontPage() {
 
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-16 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="relative rounded-3xl overflow-hidden h-64 group cursor-pointer">
+          <Link to="/shop" className="relative rounded-3xl overflow-hidden h-64 group cursor-pointer block">
             <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Equipos" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8">
               <span className="bg-[#FF6A00] text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-3">API EN VIVO</span>
@@ -203,8 +203,8 @@ export function StorefrontPage() {
               <p className="text-gray-300 text-sm mb-4">Las ofertas visibles ya salen de la base de datos del backend.</p>
               <div className="flex items-center text-[#FF6A00] font-bold text-sm">Ver catálogo <ArrowRight size={16} className="ml-1" /></div>
             </div>
-          </div>
-          <div className="relative rounded-3xl overflow-hidden h-64 group cursor-pointer">
+          </Link>
+          <Link to="/directory" className="relative rounded-3xl overflow-hidden h-64 group cursor-pointer block">
             <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Materiales" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8">
               <span className="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-3">DIRECTORIO REAL</span>
@@ -212,7 +212,7 @@ export function StorefrontPage() {
               <p className="text-gray-300 text-sm mb-4">Empresas visibles en marketplace cargadas desde la API.</p>
               <div className="flex items-center text-blue-400 font-bold text-sm">Explorar directorio <ArrowRight size={16} className="ml-1" /></div>
             </div>
-          </div>
+          </Link>
         </div>
       </section>
 
